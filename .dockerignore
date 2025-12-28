@@ -1,0 +1,14 @@
+# Exclude local dependencies and build outputs from the Docker build context
+node_modules
+dist
+
+# VCS and IDE files
+.git
+.github
+.idea
+.vite
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+
