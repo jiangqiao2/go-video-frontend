@@ -448,7 +448,9 @@ class ApiService {
 
   // 获取用户关系统计（粉丝数、关注数、关注状态）
   async getUserRelation(userUuid: string): Promise<UserRelationStat> {
-    const response = await this.api.get<ApiResponse<UserRelationStat>>(`/user/v1/open/users/${userUuid}/relation`);
+    const response = await this.api.get<ApiResponse<UserRelationStat>>('/user/v1/open/relation', {
+      params: { followee_uuid: userUuid },
+    });
     return response.data.data!;
   }
 
