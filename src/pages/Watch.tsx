@@ -390,7 +390,7 @@ const Watch: React.FC = () => {
           )}
 
           {/* Replies */}
-          <div style={{ marginTop: 12, paddingLeft: 12, borderLeft: '2px solid #f0f0f0' }}>
+            <div style={{ marginTop: 12, paddingLeft: 12, borderLeft: '2px solid var(--border-0)' }}>
             {root.repliesLoaded && (root.replies || []).map((reply) => {
               const isReplying = replyingTo && replyingTo.rootId === (root.root_uuid || root.comment_uuid) && replyingTo.target.comment_uuid === reply.comment_uuid;
               const parentName = getParentName(reply.parent_uuid);
@@ -468,8 +468,8 @@ const Watch: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh', background: '#f7f8fa' }}>
-      <Content style={{ padding: '24px 16px' }}>
+    <Layout className="tech-shell">
+      <Content style={{ padding: '20px 16px', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <Space size="middle" style={{ marginBottom: 16 }}>
             <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/')}>返回首页</Button>
@@ -482,22 +482,21 @@ const Watch: React.FC = () => {
             </div>
           ) : video && video.video_url ? (
             <>
-              <div style={{
-                position: 'relative',
-                width: '100%',
-                paddingTop: '56.25%',
-                background: '#000',
-                borderRadius: 12,
-                overflow: 'hidden',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
-              }}>
+              <div
+                className="tech-video-frame"
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  paddingTop: '56.25%',
+                }}
+              >
                 <div style={{ position: 'absolute', inset: 0 }}>
                   <VideoPlayer src={video.video_url} autoPlay />
                 </div>
               </div>
 
               {/* Uploader Info & Description */}
-              <div style={{ marginTop: 24, background: '#fff', padding: 24, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+              <div className="tech-surface" style={{ marginTop: 18, padding: 20 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer' }} onClick={() => window.location.href = `/user/${video.user_uuid}`}>
                     <Avatar
@@ -545,15 +544,15 @@ const Watch: React.FC = () => {
                   )}
                 </div>
 
-                <div style={{ paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
+                <div className="tech-divider" style={{ paddingTop: 16 }}>
                   <Title level={5} style={{ fontSize: 16, marginBottom: 8 }}>{video.title}</Title>
-                  <Paragraph style={{ color: '#666', whiteSpace: 'pre-wrap' }}>
+                  <Paragraph className="tech-muted" style={{ whiteSpace: 'pre-wrap' }}>
                     {video.description || '暂无简介'}
                   </Paragraph>
                   <div style={{ marginTop: 12 }}>
                     <Space size={[8, 8]} wrap>
                       {video.tags?.map(tag => (
-                        <Tag key={tag} color="blue">#{tag}</Tag>
+                        <Tag key={tag} color="cyan">#{tag}</Tag>
                       ))}
                     </Space>
                   </div>
@@ -571,7 +570,7 @@ const Watch: React.FC = () => {
               </div>
 
               {/* Comments */}
-              <div style={{ marginTop: 16, background: '#fff', padding: 24, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+              <div className="tech-surface" style={{ marginTop: 16, padding: 20 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                   <Space size={8}>
                     <Title level={5} style={{ margin: 0 }}>

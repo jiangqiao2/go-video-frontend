@@ -41,11 +41,11 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick, uploaderName, upl
         width: '100%',
         borderRadius: 16,
         overflow: 'hidden',
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: 'var(--surface-0)',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255, 255, 255, 0.5)',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        border: '1px solid var(--border-0)',
+        boxShadow: 'var(--shadow-md)',
         cursor: 'pointer',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
@@ -121,15 +121,17 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick, uploaderName, upl
             width: 64,
             height: 64,
             borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.95)',
+            background: 'rgba(2, 6, 23, 0.55)',
+            border: '1px solid rgba(255, 255, 255, 0.16)',
+            backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+            boxShadow: '0 0 0 1px rgba(34, 211, 238, 0.2), 0 10px 30px rgba(0, 0, 0, 0.45)',
           }}>
             <PlayCircleOutlined style={{
               fontSize: 36,
-              color: '#667eea',
+              color: 'var(--primary-color)',
             }} />
           </div>
         </div>
@@ -166,7 +168,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick, uploaderName, upl
             lineHeight: '22px',
             height: 44,
             fontWeight: 600,
-            color: '#18191c',
+            color: 'var(--text-primary)',
           }}
         >
           {video.title}
@@ -192,7 +194,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick, uploaderName, upl
                   height: 24,
                   borderRadius: '50%',
                   objectFit: 'cover',
-                  border: '2px solid rgba(102, 126, 234, 0.2)',
+                  border: '2px solid rgba(34, 211, 238, 0.18)',
                 }}
                 onError={(e) => {
                   const s = e.currentTarget.src;
@@ -239,13 +241,14 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick, uploaderName, upl
                 <span
                   key={tag}
                   style={{
-                    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-                    color: '#667eea',
+                    background:
+                      'linear-gradient(135deg, rgba(34, 211, 238, 0.12) 0%, rgba(167, 139, 250, 0.10) 100%)',
+                    color: 'rgba(230, 240, 255, 0.9)',
                     padding: '2px 10px',
                     borderRadius: 12,
                     fontSize: 12,
                     fontWeight: 500,
-                    border: '1px solid rgba(102, 126, 234, 0.2)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
                     transition: 'all 0.3s ease',
                   }}
                   className="hover-scale"

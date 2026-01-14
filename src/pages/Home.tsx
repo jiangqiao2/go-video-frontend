@@ -82,19 +82,19 @@ const Home: React.FC = () => {
     useNotificationStream(!!user);
 
     return (
-        <Layout style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }}>
+        <Layout className="tech-shell" style={{ minHeight: '100vh' }}>
             {/* 装饰性背景网格 */}
-            <div className="grid-background" style={{ opacity: 0.3 }} />
+            <div className="grid-background" style={{ opacity: 0.12 }} />
 
             {/* 顶部导航栏 - 玻璃态设计 */}
             <Header
                 className={mounted ? 'fade-in' : ''}
                 style={{
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    background: 'var(--surface-0)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
-                    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.5)',
+                    boxShadow: 'var(--shadow-md)',
+                    borderBottom: '1px solid var(--border-0)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
                     <div style={{
                         width: 46,
                         height: 46,
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        background: 'var(--gradient-primary)',
                         borderRadius: 12,
                         display: 'flex',
                         alignItems: 'center',
@@ -131,7 +131,7 @@ const Home: React.FC = () => {
                     <span style={{
                         fontSize: 22,
                         fontWeight: 700,
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        background: 'var(--gradient-primary)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
@@ -144,27 +144,28 @@ const Home: React.FC = () => {
                 <div style={{ flex: 1, maxWidth: 560, margin: '0 32px' }}>
                     <Input
                         placeholder="搜索你感兴趣的视频..."
-                        prefix={<SearchOutlined style={{ color: '#9499a0', fontSize: 16 }} />}
+                        prefix={<SearchOutlined style={{ color: 'var(--text-tertiary)', fontSize: 16 }} />}
                         suffix={
-                            <FireOutlined style={{ color: '#ff6b9d', fontSize: 16 }} title="热门搜索" />
+                            <FireOutlined style={{ color: 'var(--secondary-color)', fontSize: 16 }} title="热门搜索" />
                         }
                         style={{
                             borderRadius: 24,
-                            background: 'rgba(255, 255, 255, 0.9)',
-                            border: '2px solid transparent',
+                            background: 'rgba(2, 6, 23, 0.55)',
+                            border: '1px solid var(--border-0)',
                             padding: '10px 20px',
                             fontSize: 15,
                             transition: 'all 0.3s ease',
+                            color: 'var(--text-primary)',
                         }}
                         onFocus={(e) => {
-                            e.target.style.borderColor = '#667eea';
-                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
-                            e.target.style.background = '#fff';
+                            e.target.style.borderColor = 'var(--primary-color)';
+                            e.target.style.boxShadow = '0 0 0 4px rgba(34, 211, 238, 0.12)';
+                            e.target.style.background = 'rgba(2, 6, 23, 0.7)';
                         }}
                         onBlur={(e) => {
-                            e.target.style.borderColor = 'transparent';
+                            e.target.style.borderColor = 'var(--border-0)';
                             e.target.style.boxShadow = 'none';
-                            e.target.style.background = 'rgba(255, 255, 255, 0.9)';
+                            e.target.style.background = 'rgba(2, 6, 23, 0.55)';
                         }}
                     />
                 </div>
@@ -255,20 +256,20 @@ const Home: React.FC = () => {
                             >
                                 <Avatar
                                     style={{
-                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                        background: 'var(--gradient-primary)',
                                         boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
                                     }}
                                     src={user.avatar_url}
                                     icon={<UserOutlined />}
                                 />
-                                <span style={{ marginLeft: 10, fontSize: 15, fontWeight: 600, color: '#18191c' }}>
+                                <span style={{ marginLeft: 10, fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
                                     {user.nickname || '个人中心'}
                                 </span>
                             </div>
                             <Button
                                 type="link"
                                 onClick={handleLogout}
-                                style={{ color: '#9499a0', fontSize: 14 }}
+                                style={{ color: 'var(--text-secondary)', fontSize: 14 }}
                             >
                                 退出
                             </Button>
@@ -286,8 +287,8 @@ const Home: React.FC = () => {
                                 paddingRight: 24,
                                 fontWeight: 600,
                                 borderWidth: 2,
-                                borderColor: '#667eea',
-                                color: '#667eea',
+                                borderColor: 'var(--primary-color)',
+                                color: 'var(--primary-color)',
                             }}
                         >
                             登录
@@ -310,7 +311,7 @@ const Home: React.FC = () => {
                 {loading && videos.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: 80 }}>
                         <Spin size="large" />
-                        <p style={{ marginTop: 20, color: '#9499a0', fontSize: 15 }}>加载中...</p>
+                        <p style={{ marginTop: 20, color: 'var(--text-tertiary)', fontSize: 15 }}>加载中...</p>
                     </div>
                 ) : videos.length > 0 ? (
                     <>
@@ -339,15 +340,13 @@ const Home: React.FC = () => {
                         </Row>
                     </>
                 ) : (
-                    <div style={{
+                    <div className="tech-surface tech-surface-glow" style={{
                         textAlign: 'center',
                         padding: '120px 20px',
-                        background: 'rgba(255, 255, 255, 0.6)',
-                        backdropFilter: 'blur(10px)',
                         borderRadius: 16,
                         marginTop: 40,
                     }}>
-                        <p style={{ fontSize: 18, color: '#18191c', marginBottom: 12 }}>暂无视频，快去投稿吧！</p>
+                        <p style={{ fontSize: 18, color: 'var(--text-primary)', marginBottom: 12 }}>暂无视频，快去投稿吧！</p>
                         <Button
                             type="primary"
                             size="large"

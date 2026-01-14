@@ -174,7 +174,7 @@ const VideoManagement: React.FC = () => {
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <div
           style={{
-            background: '#fff',
+            background: 'var(--surface-0)',
             borderRadius: 12,
             padding: '20px 24px',
             boxShadow: 'var(--shadow-sm)',
@@ -217,7 +217,7 @@ const VideoManagement: React.FC = () => {
 
         <div
           style={{
-            background: '#fff',
+            background: 'var(--surface-0)',
             borderRadius: 12,
             padding: '12px 24px 16px',
             boxShadow: 'var(--shadow-sm)',
@@ -258,10 +258,10 @@ const VideoManagement: React.FC = () => {
                       gridTemplateColumns: '220px 1fr 180px',
                       gap: 16,
                       padding: 16,
-                      border: '1px solid #f0f0f0',
+                      border: '1px solid var(--border-0)',
                       borderRadius: 12,
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
-                      background: '#fff',
+                      boxShadow: 'var(--shadow-sm)',
+                      background: 'var(--surface-0)',
                       cursor: canNavigate ? 'pointer' : 'default',
                     }}
                     role={canNavigate ? 'button' : undefined}

@@ -102,8 +102,8 @@ const CreatorLayout: React.FC<CreatorLayoutProps> = ({ children, activeKey }) =>
         onCollapse={(value) => setCollapsed(value)}
         width={240}
         style={{
-          background: '#fff',
-          borderRight: '1px solid #f0f0f0',
+          background: 'var(--surface-0)',
+          borderRight: '1px solid var(--border-0)',
           position: 'fixed',
           left: 0,
           top: 0,
@@ -117,7 +117,7 @@ const CreatorLayout: React.FC<CreatorLayoutProps> = ({ children, activeKey }) =>
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: '1px solid var(--border-0)',
             padding: '0 12px',
           }}
         >
@@ -148,18 +148,18 @@ const CreatorLayout: React.FC<CreatorLayoutProps> = ({ children, activeKey }) =>
         <Header
           style={{
             padding: '0 24px',
-            background: '#fff',
+            background: 'var(--surface-0)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: '1px solid var(--border-0)',
             position: 'sticky',
             top: 0,
             zIndex: 99,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Text strong style={{ fontSize: 18, color: '#00a1d6' }}>
+            <Text strong style={{ fontSize: 18, color: 'var(--primary-color)' }}>
               创作中心
             </Text>
             <Text type="secondary" style={{ marginLeft: 12, fontSize: 12 }}>
