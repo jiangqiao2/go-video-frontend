@@ -359,7 +359,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
   return (
     <div
       ref={containerRef}
-      className={className}
+      className={['tech-video-player', className].filter(Boolean).join(' ')}
       style={{ position: 'relative', width: '100%', backgroundColor: '#000', overflow: 'hidden' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setShowControls(false)}
@@ -380,7 +380,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
           bottom: 0,
           left: 0,
           right: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+          background:
+            'linear-gradient(to top, rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.25) 55%, transparent)',
           padding: '20px 12px 12px',
           opacity: showControls || !isPlaying ? 1 : 0,
           transition: 'opacity 0.3s',
@@ -394,10 +395,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
           style={{
             position: 'relative',
             width: '100%',
-            height: 4,
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            height: 5,
+            backgroundColor: 'rgba(230, 240, 255, 0.18)',
             cursor: 'pointer',
-            borderRadius: 2,
+            borderRadius: 999,
             marginBottom: 8,
           }}
           onClick={handleSeek}
@@ -412,8 +413,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
               left: 0,
               width: `${(currentTime / duration) * 100}%`,
               height: '100%',
-              backgroundColor: '#1890ff',
-              borderRadius: 2,
+              background: 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))',
+              borderRadius: 999,
             }}
           >
             {/* Handle */}
@@ -425,8 +426,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
                 width: 10,
                 height: 10,
                 borderRadius: '50%',
-                backgroundColor: '#fff',
-                boxShadow: '0 0 4px rgba(0,0,0,0.3)',
+                backgroundColor: 'rgba(230, 240, 255, 0.95)',
+                boxShadow: '0 0 0 1px rgba(34, 211, 238, 0.25), 0 0 20px rgba(34, 211, 238, 0.25)',
                 transform: 'scale(0)',
                 transition: 'transform 0.1s',
               }}
@@ -441,7 +442,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
             <div onClick={togglePlay} style={{ cursor: 'pointer', fontSize: 24 }}>
               {isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
             </div>
-            <div style={{ fontSize: 12, fontFamily: 'monospace' }}>
+            <div
+              style={{
+                fontSize: 12,
+                fontFamily:
+                  "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+              }}
+            >
               {formatTime(currentTime)} / {formatTime(duration)}
             </div>
           </div>
@@ -468,8 +475,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
                     fontSize: 12,
                     padding: '2px 6px',
                     borderRadius: 4,
-                    border: '1px solid rgba(255, 255, 255, 0.4)',
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.22)',
+                    backgroundColor: 'rgba(2, 6, 23, 0.55)',
                     color: '#fff',
                     outline: 'none',
                   }}
@@ -523,8 +530,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, className, autoPlay }) =
       {/* Add hover effect for progress handle */}
       <style>{`
         .progress-handle { transform: scale(0); }
-        div:hover > .progress-handle,
-        div:hover .progress-handle { transform: scale(1) !important; }
+        .tech-video-player:hover .progress-handle { transform: scale(1) !important; }
       `}</style>
     </div>
   );

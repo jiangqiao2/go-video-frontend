@@ -9,12 +9,10 @@ const { Text, Title } = Typography;
 const Upload: React.FC = () => {
   return (
     <CreatorLayout activeKey="upload">
-      <div style={{
-        background: 'linear-gradient(135deg, #f0f7ff 0%, #fff 60%)',
+      <div className="tech-surface tech-surface-glow" style={{
         padding: '24px 32px',
         minHeight: 520,
-        borderRadius: 12,
-        boxShadow: 'var(--shadow-sm)',
+        borderRadius: 16,
       }}>
         <div style={{ marginBottom: 16 }}>
           <Title level={4} style={{ margin: 0 }}>投稿中心</Title>

@@ -12,7 +12,7 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <Layout style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', background: '#0a0a0a' }}>
+    <Layout className="retro-theme" style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', background: '#0a0a0a' }}>
       {/* 复古渐变背景 - 暗紫红色调 */}
       <div style={{
         position: 'absolute',

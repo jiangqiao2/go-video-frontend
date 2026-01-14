@@ -162,23 +162,23 @@ const Profile: React.FC = () => {
     };
 
     if (loading) {
-        return <Layout style={{ minHeight: '100vh', background: '#f7f8fa' }}><Content style={{ padding: 50, textAlign: 'center' }}>Loading...</Content></Layout>;
+        return <Layout className="tech-shell" style={{ minHeight: '100vh' }}><Content style={{ padding: 50, textAlign: 'center', position: 'relative', zIndex: 1 }}>Loading...</Content></Layout>;
     }
 
     if (!profile) {
-        return <Layout style={{ minHeight: '100vh', background: '#f7f8fa' }}><Content style={{ padding: 50, textAlign: 'center' }}>User not found</Content></Layout>;
+        return <Layout className="tech-shell" style={{ minHeight: '100vh' }}><Content style={{ padding: 50, textAlign: 'center', position: 'relative', zIndex: 1 }}>User not found</Content></Layout>;
     }
 
     return (
-        <Layout style={{ minHeight: '100vh', background: '#f7f8fa' }}>
+        <Layout className="tech-shell" style={{ minHeight: '100vh' }}>
             <div style={{ height: 32 }} />
 
-            <Content style={{ maxWidth: 1200, margin: '0 auto', width: '100%', padding: '0 16px' }}>
+            <Content style={{ maxWidth: 1200, margin: '0 auto', width: '100%', padding: '0 16px', position: 'relative', zIndex: 1 }}>
                 {/* User Info Header */}
                 <div style={{
                     position: 'relative',
                     padding: '0 24px 24px',
-                    background: '#fff',
+                    background: 'var(--surface-0)',
                     display: 'flex',
                     alignItems: 'flex-end',
                     gap: 24
@@ -190,14 +190,14 @@ const Profile: React.FC = () => {
                             src={profile.avatar_url}
                             icon={<UserOutlined />}
                             style={{
-                                border: '4px solid #fff',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                border: '4px solid rgba(2, 6, 23, 0.9)',
+                                boxShadow: 'var(--shadow-sm)'
                             }}
                         />
                     </div>
 
                     {/* Info */}
-                    <div style={{ flex: 1, paddingBottom: 12, color: '#1f2329' }}>
+                    <div style={{ flex: 1, paddingBottom: 12, color: 'var(--text-primary)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <Title level={3} style={{ margin: 0 }}>{profile.nickname || '创作者'}</Title>
                             <Tag color="#f50">Lv6</Tag>
@@ -262,7 +262,7 @@ const Profile: React.FC = () => {
                 </div>
 
                 {/* Stats Bar */}
-                <div style={{ background: '#fff', borderRadius: '0 0 12px 12px', padding: '16px 24px', display: 'flex', gap: 40, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                <div style={{ background: 'var(--surface-0)', borderRadius: '0 0 12px 12px', padding: '16px 24px', display: 'flex', gap: 40, boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-0)', borderTop: 'none' }}>
                     <div style={{ textAlign: 'center' }}>
                         <Text type="secondary">关注数</Text>
                         <div style={{ fontSize: 18, fontWeight: 'bold' }}>{profile.following_count}</div>
@@ -278,7 +278,7 @@ const Profile: React.FC = () => {
                 </div>
 
                 {/* Content Tabs */}
-                <div style={{ marginTop: 24, background: '#fff', borderRadius: 12, padding: 24, minHeight: 400 }}>
+                <div className="tech-surface" style={{ marginTop: 16, padding: 20, minHeight: 400 }}>
                     <Tabs defaultActiveKey="1" items={[
                         {
                             key: '1',
