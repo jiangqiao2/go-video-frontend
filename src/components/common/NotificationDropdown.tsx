@@ -63,9 +63,10 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
       style={{
         width: 360,
         maxHeight: 420,
-        background: '#fff',
+        background: 'var(--surface-0)',
         borderRadius: 12,
-        boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+        boxShadow: 'var(--shadow-md), var(--shadow-glow)',
+        border: '1px solid var(--border-0)',
         padding: 12,
       }}
     >
@@ -78,7 +79,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
         }}
       >
         <Space>
-          <BellOutlined style={{ color: '#ff6b9d' }} />
+          <BellOutlined style={{ color: 'var(--primary-color)' }} />
           <Text strong>消息中心</Text>
         </Space>
         <Button type="link" size="small" onClick={() => markAllAsRead()}>
@@ -92,12 +93,12 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
           type="text"
           block
           onClick={() => go('/notifications/reply')}
-          style={{ height: 40, textAlign: 'left' }}
+          style={{ height: 40, textAlign: 'left', borderRadius: 10 }}
         >
           <Space style={{ width: '100%', justifyContent: 'space-between' }}>
             <span>回复我的</span>
             {counts.reply > 0 && (
-              <span style={{ color: '#ff4d4f', fontSize: 12 }}>{formatCount(counts.reply)}</span>
+              <span style={{ color: 'var(--primary-color)', fontSize: 12 }}>{formatCount(counts.reply)}</span>
             )}
           </Space>
         </Button>
@@ -106,12 +107,12 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
           type="text"
           block
           onClick={() => go('/notifications/at')}
-          style={{ height: 40, textAlign: 'left' }}
+          style={{ height: 40, textAlign: 'left', borderRadius: 10 }}
         >
           <Space style={{ width: '100%', justifyContent: 'space-between' }}>
             <span>@我的</span>
             {counts.at > 0 && (
-              <span style={{ color: '#ff4d4f', fontSize: 12 }}>{formatCount(counts.at)}</span>
+              <span style={{ color: 'var(--primary-color)', fontSize: 12 }}>{formatCount(counts.at)}</span>
             )}
           </Space>
         </Button>
@@ -120,12 +121,12 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
           type="text"
           block
           onClick={() => go('/notifications/likes')}
-          style={{ height: 40, textAlign: 'left' }}
+          style={{ height: 40, textAlign: 'left', borderRadius: 10 }}
         >
           <Space style={{ width: '100%', justifyContent: 'space-between' }}>
             <span>收到的赞</span>
             {counts.likes > 0 && (
-              <span style={{ color: '#ff4d4f', fontSize: 12 }}>{formatCount(counts.likes)}</span>
+              <span style={{ color: 'var(--primary-color)', fontSize: 12 }}>{formatCount(counts.likes)}</span>
             )}
           </Space>
         </Button>
@@ -134,12 +135,12 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
           type="text"
           block
           onClick={() => go('/notifications/system')}
-          style={{ height: 40, textAlign: 'left' }}
+          style={{ height: 40, textAlign: 'left', borderRadius: 10 }}
         >
           <Space style={{ width: '100%', justifyContent: 'space-between' }}>
             <span>系统消息</span>
             {counts.system > 0 && (
-              <span style={{ color: '#ff4d4f', fontSize: 12 }}>{formatCount(counts.system)}</span>
+              <span style={{ color: 'var(--primary-color)', fontSize: 12 }}>{formatCount(counts.system)}</span>
             )}
           </Space>
         </Button>
@@ -148,12 +149,12 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onItemClick
           type="text"
           block
           onClick={() => go('/notifications/mine')}
-          style={{ height: 40, textAlign: 'left' }}
+          style={{ height: 40, textAlign: 'left', borderRadius: 10 }}
         >
           <Space style={{ width: '100%', justifyContent: 'space-between' }}>
             <span>我的消息</span>
             {counts.mine > 0 && (
-              <span style={{ color: '#ff4d4f', fontSize: 12 }}>{formatCount(counts.mine)}</span>
+              <span style={{ color: 'var(--primary-color)', fontSize: 12 }}>{formatCount(counts.mine)}</span>
             )}
           </Space>
         </Button>

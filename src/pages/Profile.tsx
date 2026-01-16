@@ -175,14 +175,16 @@ const Profile: React.FC = () => {
 
             <Content style={{ maxWidth: 1200, margin: '0 auto', width: '100%', padding: '0 16px', position: 'relative', zIndex: 1 }}>
                 {/* User Info Header */}
-                <div style={{
-                    position: 'relative',
-                    padding: '0 24px 24px',
-                    background: 'var(--surface-0)',
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    gap: 24
-                }}>
+                <div
+                    className="tech-surface tech-surface-glow"
+                    style={{
+                        position: 'relative',
+                        padding: '20px 24px',
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        gap: 24,
+                    }}
+                >
                     {/* Avatar */}
                     <div style={{ position: 'relative' }}>
                         <Avatar
@@ -203,7 +205,7 @@ const Profile: React.FC = () => {
                             <Tag color="#f50">Lv6</Tag>
                             <Tag color="#ff4d4f">年度大会员</Tag>
                         </div>
-                        <Paragraph style={{ margin: '8px 0 0', color: '#666', maxWidth: 600 }} ellipsis={{ rows: 2 }}>
+                        <Paragraph className="tech-muted" style={{ margin: '8px 0 0', maxWidth: 600 }} ellipsis={{ rows: 2 }}>
                             {profile.description || '这个人很懒，什么都没留下'}
                         </Paragraph>
                     </div>
@@ -262,7 +264,16 @@ const Profile: React.FC = () => {
                 </div>
 
                 {/* Stats Bar */}
-                <div style={{ background: 'var(--surface-0)', borderRadius: '0 0 12px 12px', padding: '16px 24px', display: 'flex', gap: 40, boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-0)', borderTop: 'none' }}>
+                <div
+                    className="tech-surface"
+                    style={{
+                        marginTop: 12,
+                        padding: '16px 24px',
+                        display: 'flex',
+                        gap: 40,
+                        boxShadow: 'var(--shadow-sm)',
+                    }}
+                >
                     <div style={{ textAlign: 'center' }}>
                         <Text type="secondary">关注数</Text>
                         <div style={{ fontSize: 18, fontWeight: 'bold' }}>{profile.following_count}</div>
@@ -338,6 +349,13 @@ const Profile: React.FC = () => {
                 open={editVisible}
                 onClose={() => setEditVisible(false)}
                 destroyOnClose
+                styles={{
+                    header: {
+                        background: 'rgba(2, 6, 23, 0.75)',
+                        borderBottom: '1px solid var(--border-0)',
+                    },
+                    body: { background: 'rgba(2, 6, 23, 0.55)' },
+                }}
             >
                 <Form layout="vertical" form={profileForm} initialValues={{ nickname: profile?.nickname }}>
                     <Form.Item label="头像">
@@ -418,8 +436,8 @@ const Profile: React.FC = () => {
 };
 
 const EmptyState = () => (
-    <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>
-        暂无内容
+    <div style={{ padding: 40, textAlign: 'center' }}>
+        <span style={{ color: 'var(--text-tertiary)' }}>暂无内容</span>
     </div>
 );
 

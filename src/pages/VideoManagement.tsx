@@ -299,7 +299,7 @@ const VideoManagement: React.FC = () => {
                         <Text strong style={{ fontSize: 16 }}>{video.title || '未命名稿件'}</Text>
                         {renderStatus(video.status)}
                       </Space>
-                      <Space size={12} wrap style={{ fontSize: 12, color: '#6c6f73' }}>
+                      <Space size={12} wrap style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>
                         <span>创建：{formatPublishedTime(video.created_at)}</span>
                         {video.status === 'Published' && video.published_at && (
                           <span>发布：{formatPublishedTime(video.published_at)}</span>
@@ -310,7 +310,7 @@ const VideoManagement: React.FC = () => {
                           {video.description}
                         </Paragraph>
                       )}
-                      <Space size={20} wrap style={{ color: '#6c6f73' }}>
+                      <Space size={20} wrap style={{ color: 'var(--text-tertiary)' }}>
                         {stats.map((item) => (
                           <Space size={6} key={item.label}>
                             {item.icon}

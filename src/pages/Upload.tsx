@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Row, Col, Card, Space, Tag } from 'antd';
+import { Typography, Row, Col, Space, Tag } from 'antd';
 import { FileOutlined, VideoCameraOutlined, PictureOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import VideoUpload from '@/components/upload/VideoUpload';
 import CreatorLayout from '@/components/layout/CreatorLayout';
@@ -34,10 +34,14 @@ const Upload: React.FC = () => {
               icon: <PictureOutlined style={{ color: '#1890ff', fontSize: 20 }} />,
             }].map((item) => (
               <Col span={8} key={item.title}>
-                <Card bordered={false} style={{ minHeight: 120 }}>
+                <div className="tech-surface" style={{ minHeight: 120, padding: 16 }}>
                   <Space align="start">
                     <div style={{
-                      width: 40, height: 40, background: '#e6f7ff', borderRadius: 8,
+                      width: 40,
+                      height: 40,
+                      background: 'linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(167, 139, 250, 0.14))',
+                      border: '1px solid rgba(255,255,255,0.10)',
+                      borderRadius: 10,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       {item.icon}
@@ -47,12 +51,12 @@ const Upload: React.FC = () => {
                       <Text type="secondary" style={{ fontSize: 12, lineHeight: 1.6 }}>{item.desc}</Text>
                     </div>
                   </Space>
-                </Card>
+                </div>
               </Col>
             ))}
           </Row>
 
-          <Card bordered={false} style={{ boxShadow: 'var(--shadow-sm)' }}>
+          <div className="tech-surface" style={{ padding: 18 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <Space>
                 <PlayCircleOutlined style={{ color: '#00a1d6' }} />
@@ -63,7 +67,7 @@ const Upload: React.FC = () => {
               <Text type="secondary" style={{ fontSize: 12 }}>上传后可在「稿件管理」查看进度</Text>
             </div>
             <VideoUpload />
-          </Card>
+          </div>
         </div>
       </div>
     </CreatorLayout>
