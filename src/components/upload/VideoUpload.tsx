@@ -1016,6 +1016,7 @@ const VideoUpload: React.FC = () => {
                       style={{
                         borderRadius: 10,
                         borderColor: '#d0d5dd',
+                        background: '#ffffff',
                         color: '#0f172a',
                       }}
                     />
@@ -1032,6 +1033,7 @@ const VideoUpload: React.FC = () => {
                       style={{
                         borderRadius: 10,
                         borderColor: '#d0d5dd',
+                        background: '#ffffff',
                         color: '#0f172a',
                       }}
                     />
