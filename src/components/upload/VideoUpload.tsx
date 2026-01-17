@@ -275,9 +275,9 @@ const VideoUpload: React.FC = () => {
       return false;
     }
 
-    const maxSize = 2 * 1024 * 1024 * 1024; // 2GB
+    const maxSize = 10 * 1024 * 1024 * 1024; // 10GB
     if (file.size > maxSize) {
-      message.error('文件大小不能超过2GB');
+      message.error('文件大小不能超过10GB');
       return false;
     }
 
@@ -802,7 +802,7 @@ const VideoUpload: React.FC = () => {
           opacity: 0.9,
           margin: 0,
         }}>
-          支持 MP4, AVI, MOV, WMV, FLV, MKV 格式，单个文件≤2GB
+          支持 MP4, AVI, MOV, WMV, FLV, MKV 格式，单个文件≤10GB
         </p>
       </div>
 
@@ -855,7 +855,7 @@ const VideoUpload: React.FC = () => {
               color: '#9499a0',
               marginTop: 8,
             }}>
-              支持主流视频格式，最大 5GB
+              支持主流视频格式，最大 10GB
             </p>
           </Dragger>
         )}
