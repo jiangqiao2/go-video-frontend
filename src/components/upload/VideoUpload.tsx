@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, unstable_usePrompt } from 'react-router-dom';
 import { Upload, Button, Progress, Card, Typography, Space, Alert, Tag, Form, Input, Select, Image, App } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useAuthStore } from '@/store/auth';
@@ -71,7 +71,7 @@ const getDefaultTitle = (fileName: string) => {
 };
 
 const VideoUpload: React.FC = () => {
-  const { message } = App.useApp();
+  const { message, modal } = App.useApp();
   const [uploadTasks, setUploadTasks] = useState<UploadTask[]>([]);
   const [publishLoading, setPublishLoading] = useState(false);
   const [step, setStep] = useState<'select' | 'edit'>('select');
@@ -87,6 +87,27 @@ const VideoUpload: React.FC = () => {
   const [coverUploading, setCoverUploading] = useState(false);
   const [tagOptions, setTagOptions] = useState<{ label: string; value: string }[]>([]);
   const currentTask = useMemo(() => uploadTasks[0], [uploadTasks]);
+  const lastFormTaskIdRef = useRef<string | null>(null);
+  const [autoPublishTaskId, setAutoPublishTaskId] = useState<string | null>(null);
+  const shouldWarnOnLeave = useMemo(
+    () => publishLoading || uploadTasks.some((task) => task.status !== 'completed'),
+    [publishLoading, uploadTasks],
+  );
+
+  unstable_usePrompt({
+    when: shouldWarnOnLeave,
+    message: '上传尚未完成，离开页面将中断上传并导致投稿失败。是否继续离开？',
+  });
+
+  useEffect(() => {
+    if (!shouldWarnOnLeave) return;
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [shouldWarnOnLeave]);
 
   const handleVideoStatusEvent = useCallback(
     (video: VideoDetail) => {
@@ -142,22 +163,42 @@ const VideoUpload: React.FC = () => {
 
   useEffect(() => {
     if (!currentTask) return;
+    if (lastFormTaskIdRef.current === currentTask.id) return;
+    lastFormTaskIdRef.current = currentTask.id;
     publishForm.setFieldsValue({
       title: getDefaultTitle(currentTask.file.name),
       description: '',
       tags: currentTask.publishedVideo?.tags ?? [],
       cover_url: coverKey,
     });
-  }, [currentTask, publishForm, coverKey]);
+  }, [currentTask?.id, publishForm, coverKey]);
 
-  const handlePublishSubmit = async () => {
+  useEffect(() => {
+    if (!currentTask) return;
+    publishForm.setFieldsValue({ cover_url: coverKey });
+  }, [coverKey, currentTask?.id, publishForm]);
+
+  useEffect(() => {
+    if (!currentTask) return;
+    if (currentTask.status !== 'completed') return;
+    if (autoPublishTaskId !== currentTask.id) return;
+    if (publishLoading) return;
+    publishForm
+      .validateFields()
+      .then((values) => publishVideo(values, currentTask.id))
+      .catch(() => {
+        setAutoPublishTaskId((prev) => (prev === currentTask.id ? null : prev));
+        message.error('请先完善标题和简介后再投稿');
+      });
+  }, [autoPublishTaskId, currentTask?.id, currentTask?.status, publishLoading, publishForm]);
+
+  const publishVideo = async (values: PublishFormValues, taskId: string) => {
+    if (!currentTask || !currentTask.uploadInfo) {
+      message.error('上传任务未准备好');
+      return;
+    }
+    setPublishLoading(true);
     try {
-      const values = await publishForm.validateFields();
-      if (!currentTask || !currentTask.uploadInfo) {
-        message.error('上传任务未准备好');
-        return;
-      }
-      setPublishLoading(true);
       const publishedVideo = await apiService.publishVideo({
         upload_video_uuid: currentTask.uploadInfo.upload_video_uuid,
         title: values.title,
@@ -175,14 +216,49 @@ const VideoUpload: React.FC = () => {
       message.success('视频发布成功，已进入转码中');
       navigate('/videos');
     } catch (error: any) {
+      console.error('Publish video failed:', error);
+      const errorMessage = error?.response?.data?.message || '发布失败，请稍后重试';
+      message.error(errorMessage);
+    } finally {
+      setPublishLoading(false);
+      setAutoPublishTaskId((prev) => (prev === taskId ? null : prev));
+    }
+  };
+
+  const handlePublishSubmit = async () => {
+    try {
+      const values = await publishForm.validateFields();
+      if (!currentTask || !currentTask.uploadInfo) {
+        message.error('上传任务未准备好');
+        return;
+      }
+
+      if (currentTask.status !== 'completed') {
+        if (autoPublishTaskId === currentTask.id) {
+          message.info('已在后台等待上传完成后自动投稿');
+          return;
+        }
+        modal.confirm({
+          title: '确认投稿',
+          content: '视频还在上传中，将在上传完成后自动投稿。离开页面会中断上传。是否继续？',
+          okText: '继续',
+          cancelText: '取消',
+          onOk: () => {
+            setAutoPublishTaskId(currentTask.id);
+            message.info('已在后台等待上传完成后自动投稿');
+          },
+        });
+        return;
+      }
+
+      await publishVideo(values, currentTask.id);
+    } catch (error: any) {
       if (error?.errorFields) {
         return;
       }
       console.error('Publish video failed:', error);
       const errorMessage = error?.response?.data?.message || '发布失败，请稍后重试';
       message.error(errorMessage);
-    } finally {
-      setPublishLoading(false);
     }
   };
 
@@ -581,6 +657,7 @@ const VideoUpload: React.FC = () => {
     chunkUuidRef.current.delete(taskId);
     chunkPutUrlRef.current.delete(taskId);
     setUploadTasks((prev) => prev.filter((task) => task.id !== taskId));
+    setAutoPublishTaskId((prev) => (prev === taskId ? null : prev));
     setStep('select');
     setCoverPreviewUrl(undefined);
     setCoverKey(undefined);
@@ -718,14 +795,14 @@ const VideoUpload: React.FC = () => {
           marginBottom: 8,
           color: '#fff',
         }}>
-          投稿上传 🎬
+          投稿上传
         </h2>
         <p style={{
           fontSize: 15,
           opacity: 0.9,
           margin: 0,
         }}>
-          支持 MP4, AVI, MOV, WMV, FLV, MKV 格式，单个文件最大 2GB
+          支持 MP4, AVI, MOV, WMV, FLV, MKV 格式，单个文件≤2GB
         </p>
       </div>
 
@@ -861,26 +938,36 @@ const VideoUpload: React.FC = () => {
               {/* 发布表单 */}
               <Form form={publishForm} layout="vertical" onFinish={handlePublishSubmit}>
                 <div style={{
-                  background: 'rgba(255, 255, 255, 0.6)',
-                  borderRadius: 12,
-                  padding: 24,
-                  border: '1px solid rgba(102, 126, 234, 0.1)',
+                  background: '#ffffff',
+                  borderRadius: 14,
+                  padding: 28,
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 8px 24px rgba(15, 23, 42, 0.06)',
                 }}>
-                  <Title level={5} style={{
-                    marginBottom: 24,
-                    color: '#18191c',
-                    fontWeight: 600,
-                  }}>
-                    视频信息
-                  </Title>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+                    <div>
+                      <Title level={5} style={{ margin: 0, color: '#0f172a', fontWeight: 700 }}>
+                        视频信息
+                      </Title>
+                      <Text style={{ fontSize: 13, color: '#64748b', display: 'block', marginTop: 6 }}>
+                        提交后将后台上传，完成后自动投稿
+                      </Text>
+                    </div>
+                    <Tag
+                      color={currentTask.status === 'completed' ? 'green' : 'blue'}
+                      style={{ borderRadius: 999, padding: '2px 10px', fontWeight: 500 }}
+                    >
+                      {currentTask.status === 'completed' ? '可直接投稿' : '上传进行中'}
+                    </Tag>
+                  </div>
 
                   <Form.Item label="封面" name="cover_url">
                     <Space align="start">
                       {coverPreviewUrl ? (
                         <div style={{
-                          borderRadius: 8,
+                          borderRadius: 10,
                           overflow: 'hidden',
-                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                          boxShadow: '0 6px 16px rgba(15, 23, 42, 0.12)',
                         }}>
                           <Image
                             src={coverPreviewUrl}
@@ -893,14 +980,14 @@ const VideoUpload: React.FC = () => {
                         <div style={{
                           width: 200,
                           height: 112,
-                          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
+                          background: '#f8fafc',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          borderRadius: 8,
-                          border: '2px dashed rgba(102, 126, 234, 0.3)',
+                          borderRadius: 10,
+                          border: '1px dashed #cbd5f5',
                         }}>
-                          <Text type="secondary">暂无封面</Text>
+                          <Text style={{ color: '#64748b' }}>暂无封面</Text>
                         </div>
                       )}
                       <Upload accept="image/png,image/jpeg" showUploadList={false} beforeUpload={handleCoverFileSelect}>
@@ -908,7 +995,7 @@ const VideoUpload: React.FC = () => {
                           loading={coverUploading}
                           disabled={coverUploading}
                           className="hover-lift"
-                          style={{ borderRadius: 8 }}
+                          style={{ borderRadius: 10 }}
                         >
                           选择封面
                         </Button>
@@ -927,8 +1014,9 @@ const VideoUpload: React.FC = () => {
                     <Input
                       placeholder="请输入视频标题"
                       style={{
-                        borderRadius: 8,
-                        transition: 'all 0.3s ease',
+                        borderRadius: 10,
+                        borderColor: '#d0d5dd',
+                        color: '#0f172a',
                       }}
                     />
                   </Form.Item>
@@ -942,8 +1030,9 @@ const VideoUpload: React.FC = () => {
                       rows={4}
                       placeholder="简单介绍一下您的视频"
                       style={{
-                        borderRadius: 8,
-                        transition: 'all 0.3s ease',
+                        borderRadius: 10,
+                        borderColor: '#d0d5dd',
+                        color: '#0f172a',
                       }}
                     />
                   </Form.Item>
@@ -957,7 +1046,7 @@ const VideoUpload: React.FC = () => {
                     />
                   </Form.Item>
 
-                  <Form.Item>
+                  <Form.Item style={{ marginTop: 4 }}>
                     <Button
                       type="primary"
                       htmlType="submit"
@@ -971,12 +1060,12 @@ const VideoUpload: React.FC = () => {
                         paddingRight: 32,
                         fontSize: 16,
                         fontWeight: 600,
-                        borderRadius: 10,
+                        borderRadius: 12,
                         border: 'none',
                         width: '100%',
                       }}
                     >
-                      发布视频
+                      立即投稿
                     </Button>
                   </Form.Item>
                 </div>
